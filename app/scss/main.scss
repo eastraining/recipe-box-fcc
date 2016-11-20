@@ -1,0 +1,14 @@
+// main.scss
+
+@import 'modules/default-container';
+@import 'modules/table-row';
+
+$nice-margin: 2%;
+
+.title {
+  margin: $nice-margin 0 $nice-margin 0;
+}
+
+footer {
+  margin-bottom: $nice-margin;
+}
