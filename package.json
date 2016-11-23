@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --colors --watch",
-    "sass": "sass app/scss/main.scss public/main.css"
+    "sass": "sass --watch app/scss/main.scss:public/main.css"
   },
   "repository": {
     "type": "git",

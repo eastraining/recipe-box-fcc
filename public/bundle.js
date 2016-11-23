@@ -57,6 +57,18 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 
+	// default recipe list
+	var defaultRecipes = [{
+	  title: 'Singapore Fried Noodles',
+	  ingredients: ['Egg Noodles', 'Eggs', 'Shrimp', 'Green Bean Sprouts', 'Soy Sauce']
+	}, {
+	  title: 'Bak Kut Teh',
+	  ingredients: ['Pork Ribs', 'White Pepper', 'Garlic', 'Chinese Herbs', 'Fried Doughsticks']
+	}, {
+	  title: 'Beef Bourguignon',
+	  ingredients: ['Beef', 'Red Wine', 'Beef Broth', 'Garlic', 'Onions', 'Mushrooms']
+	}];
+
 	// stylistic components
 	function Main() {
 	  return React.createElement(
@@ -90,16 +102,28 @@
 	  function App() {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+	    _this.state = {
+	      current: 'newRecipe',
+	      recipes: []
+	    };
+	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.setState({ recipes: defaultRecipes });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return React.createElement(
 	        'div',
 	        { className: 'site-content' },
-	        'Under Construction'
+	        React.createElement(Sidebar, { recipes: this.state.recipes }),
+	        React.createElement(Display, { current: this.state.current })
 	      );
 	    }
 	  }]);
@@ -107,9 +131,48 @@
 	  return App;
 	}(React.Component);
 
+	// Sidebar: displays existing recipes and allows creation of new recipes
+	// Takes props from App to generate the list of existing recipes
+
+
+	function Sidebar(props) {
+	  var titles = [];
+	  if (props.recipes != ([] || undefined)) {
+	    console.log(props.recipes);
+	    for (var i = 0; i < props.recipes.length; i++) {
+	      titles.push(props.recipes[i]['title']);
+	    }
+	  }
+
+	  return React.createElement(
+	    'div',
+	    { className: 'sidebar' },
+	    React.createElement(RecipeName, { data: 'New Recipe' }),
+	    titles.map(function (listvalue, index) {
+	      return React.createElement(RecipeName, { data: listvalue, key: index });
+	    })
+	  );
+	}
+	// RecipeName: creates each row in the list in Sidebar
+	function RecipeName(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'sidebar-row' },
+	    React.createElement(
+	      'div',
+	      { className: 'sidebar-row__text' },
+	      props.data
+	    ),
+	    React.createElement('div', { className: 'sidebar-row__divider' })
+	  );
+	}
+
+	// Display: shows the currently selected recipe
+	function Display(props) {
+	  return React.createElement('div', { className: 'contentbar' });
+	}
+
 	// render App
-
-
 	ReactDOM.render(React.createElement(Main, null), document.getElementById('app'));
 
 /***/ },

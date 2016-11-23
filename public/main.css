@@ -4,7 +4,9 @@
   flex-direction: column; }
 
 .site-content {
-  flex: 1; }
+  flex: 1;
+  display: flex;
+  justify-content: space-between; }
 
 .table-row {
   display: flex;
@@ -34,10 +36,36 @@
   width: 4rem;
   margin: 0 1rem 0 1rem; }
 
+.sidebar {
+  display: flex;
+  width: 30%;
+  height: 1;
+  border: 1.5px solid #d3d3d3;
+  flex-direction: column; }
+
+.sidebar-row {
+  display: flex;
+  flex-direction: column; }
+
+.sidebar-row__text {
+  margin: 2rem 1rem 2rem 1rem;
+  align-items: center;
+  padding-left: 1rem; }
+
+.sidebar-row__divider {
+  border: 1.5px solid #d3d3d3;
+  margin: 0rem 1rem 0rem 1rem; }
+
+.contentbar {
+  display: flex;
+  width: 69%;
+  height: 1;
+  border: 1.5px solid #d3d3d3; }
+
 .title {
-  margin: 2% 0 2% 0; }
+  margin: 2rem 0 2rem 0; }
 
 footer {
-  margin-bottom: 2%; }
+  margin: 1rem 0 1rem 0; }
 
 /*# sourceMappingURL=main.css.map */

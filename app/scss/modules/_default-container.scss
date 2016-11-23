@@ -1,5 +1,5 @@
 // _default-container.scss
-// for general layouts not using bootstrap's container
+// for general layouts using bootstrap's container
 
 .main {
   display: flex;
@@ -9,4 +9,6 @@
 
 .site-content {
   flex: 1;
+  display: flex;
+  justify-content: space-between;
 }
