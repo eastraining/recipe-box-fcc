@@ -28,7 +28,14 @@ $border: 1.5px solid #d3d3d3;
 
 .contentbar {
   display: flex;
+  flex-direction: column;
   width: 69%;
   height: 1;
   border: $border;
+}
+.contentbar-title {
+  
+}
+.contentbar-row {
+  
 }

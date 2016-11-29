@@ -2,7 +2,7 @@
   "name": "recipe-box-fcc",
   "version": "1.0.0",
   "description": "Recipe box for FCC zipline",
-  "main": "app/index.jsx",
+  "main": "app/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --colors --watch",
@@ -25,6 +25,9 @@
     "babel-preset-react": "^6.16.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.7.4",
     "webpack": "^1.13.3"
   }
 }
