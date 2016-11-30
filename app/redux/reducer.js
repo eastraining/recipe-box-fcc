@@ -9,11 +9,12 @@
 // }
 
 const reducer = (state, action) => {
-  switch(action) {
-  //   case 'SELECT_ITEM':
-  //     return Object.assign({}, state, {
-
-  //     });
+  switch(action.type) {
+    case 'SELECT_ITEM':
+      const newCurrent = state.recipes.filter(obj => obj.id === action.id)[0];
+      return Object.assign({}, state, {
+        current: newCurrent
+      });
     // case 'ADD_RECIPE':
     //   return Object.assign({}, state, {
     //     recipes: [{

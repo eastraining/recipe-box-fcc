@@ -5,7 +5,8 @@
   "main": "app/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --progress --colors --watch",
+    "dev": "webpack -d --progress --colors --watch",
+    "build": "webpack --progress --colors",
     "sass": "sass --watch app/scss/main.scss:public/main.css"
   },
   "repository": {

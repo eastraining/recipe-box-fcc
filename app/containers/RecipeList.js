@@ -6,7 +6,6 @@ import actions from '../redux/actions'
 
 class RecipeList extends Component {
   render() {
-  	console.log(this.props);
     const state = this.props;
 
     return (
