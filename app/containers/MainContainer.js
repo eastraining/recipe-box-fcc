@@ -14,17 +14,16 @@ class MainContainer extends React.Component {
     // this.handleSidebarClick = this.handleSidebarClick.bind(this);
   }
 
-  // handleSidebarClick(event) {
-  //   const target = parseInt(event.target.id || event.srcElement);
-  //   const newCurrent = this.state.recipes[target];
-  //   this.setState({current: newCurrent});
-  // }
+  handleClick(event) {
+    event.preventDefault();
+
+  }
 
   render() {
     return(
       <div className="site-content">
         <Sidebar recipes={this.props.recipes} />
-        <Display current={this.props.current} />
+        <Display current={this.props.current} handleChange={this.state.} />
       </div>
     );
   }

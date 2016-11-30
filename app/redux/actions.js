@@ -3,17 +3,25 @@
 // ADD_RECIPE adds a recipe to the state
 // EDIT_RECIPE edits a recipe already in the state
 
-export default actions = {
-  function addRecipe(recipe) {
+let actions = {
+  addRecipe: (recipe) => {
     return {
       type: 'ADD_RECIPE',
-      recipe: recipe
+      recipe
     }
   },
-  function editRecipe(recipe) {
+  editRecipe: (recipe) => {
   	return {
   	  type: 'EDIT_RECIPE',
-  	  recipe: recipe
+  	  recipe
   	}
+  },
+  selectItem: (id) => {
+    return {
+      type: 'SELECT_ITEM',
+      id
+    }
   }
 }
+
+export default actions;

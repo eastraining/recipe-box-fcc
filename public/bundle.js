@@ -66,22 +66,22 @@
 
 	// default recipe list
 	var defaultRecipes = [{
-	  title: 'Singapore Fried Noodles',
-	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
-	  id: 0
+	  id: 'Singapore Fried Noodles',
+	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce'
 	}, {
-	  title: 'Bak Kut Teh',
-	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks',
-	  id: 1
+	  id: 'Bak Kut Teh',
+	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks'
 	}, {
-	  title: 'Beef Bourguignon',
-	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms',
-	  id: 2
+	  id: 'Beef Bourguignon',
+	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms'
 	}];
 
 	// configure and create store
 	var initialState = {
-	  current: '',
+	  current: {
+	    id: 'Singapore Fried Noodles',
+	    ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce'
+	  },
 	  recipes: defaultRecipes
 	};
 	var store = (0, _store2.default)(initialState);
@@ -23267,40 +23267,34 @@
 /* 209 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = reducer;
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 	// Reducer
 	// Accepts 2 actions: ADD_RECIPE and EDIT_RECIPE
 	// Returns a state with a new recipe,
 	// and a state with one recipe changed respectively
 
-	function getID(state) {
-	  return state.todos.reduce(function (maxID, todo) {
-	    return Math.max(todo.id, maxID);
-	  }, -1) + 1;
-	}
 
 	// function updateRecipes(allRecipes, newRecipe) {
 
 	// }
 
-	function reducer(state, action) {
+	var reducer = function reducer(state, action) {
 	  switch (action) {
-	    case 'ADD_RECIPE':
-	      return Object.assign({}, state, {
-	        recipes: [{
-	          title: action.recipe.title,
-	          ingredients: action.recipe.ingredients,
-	          id: getID(state)
-	        }].concat(_toConsumableArray(state.recipes))
-	      });
+	    //   case 'SELECT_ITEM':
+	    //     return Object.assign({}, state, {
+
+	    //     });
+	    // case 'ADD_RECIPE':
+	    //   return Object.assign({}, state, {
+	    //     recipes: [{
+	    //       id: action.recipe.id,
+	    //       ingredients: action.recipe.ingredients,
+	    //     }, ...state.recipes]
+	    //   });
 	    // case 'EDIT_RECIPE':
 	    //   return (
 	    //     Object.assign({}, state, {})
@@ -23308,7 +23302,9 @@
 	    default:
 	      return state;
 	  }
-	}
+	};
+
+	exports.default = reducer;
 
 /***/ },
 /* 210 */
@@ -24185,9 +24181,13 @@
 
 	var _reactDom = __webpack_require__(32);
 
-	var _MainContainer = __webpack_require__(217);
+	var _RecipeList = __webpack_require__(217);
 
-	var _MainContainer2 = _interopRequireDefault(_MainContainer);
+	var _RecipeList2 = _interopRequireDefault(_RecipeList);
+
+	var _CurrentRecipe = __webpack_require__(220);
+
+	var _CurrentRecipe2 = _interopRequireDefault(_CurrentRecipe);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24196,16 +24196,21 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'main container' },
-	    _react2.default.createElement(Title, { text: 'My Recipe Book' }),
-	    _react2.default.createElement(_MainContainer2.default, null),
+	    _react2.default.createElement(Title, null),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'site-content' },
+	      _react2.default.createElement(_RecipeList2.default, null),
+	      _react2.default.createElement(_CurrentRecipe2.default, null)
+	    ),
 	    _react2.default.createElement(Footer, null)
 	  );
 	};
-	var Title = function Title(props) {
+	var Title = function Title() {
 	  return _react2.default.createElement(
 	    'h1',
 	    { className: 'text-center title' },
-	    props.text
+	    'My Recipe Book'
 	  );
 	};
 	var Footer = function Footer() {
@@ -24236,15 +24241,15 @@
 
 	var _reactDom = __webpack_require__(32);
 
+	var _SidebarList = __webpack_require__(218);
+
+	var _SidebarList2 = _interopRequireDefault(_SidebarList);
+
 	var _reactRedux = __webpack_require__(178);
 
-	var _Display = __webpack_require__(218);
+	var _actions = __webpack_require__(219);
 
-	var _Display2 = _interopRequireDefault(_Display);
-
-	var _Sidebar = __webpack_require__(219);
-
-	var _Sidebar2 = _interopRequireDefault(_Sidebar);
+	var _actions2 = _interopRequireDefault(_actions);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24254,53 +24259,191 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	// MainContainer
-	// Collects data from Redux store
-	// Dispatches data to Sidebar and Display displays
-	var MainContainer = function (_React$Component) {
-	  _inherits(MainContainer, _React$Component);
+	var RecipeList = function (_Component) {
+	  _inherits(RecipeList, _Component);
 
-	  function MainContainer(props) {
-	    _classCallCheck(this, MainContainer);
+	  function RecipeList() {
+	    _classCallCheck(this, RecipeList);
 
-	    return _possibleConstructorReturn(this, (MainContainer.__proto__ || Object.getPrototypeOf(MainContainer)).call(this, props));
-
-	    // this.handleSidebarClick = this.handleSidebarClick.bind(this);
+	    return _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).apply(this, arguments));
 	  }
 
-	  // handleSidebarClick(event) {
-	  //   const target = parseInt(event.target.id || event.srcElement);
-	  //   const newCurrent = this.state.recipes[target];
-	  //   this.setState({current: newCurrent});
-	  // }
-
-	  _createClass(MainContainer, [{
+	  _createClass(RecipeList, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'site-content' },
-	        _react2.default.createElement(_Sidebar2.default, { recipes: this.props.recipes }),
-	        _react2.default.createElement(_Display2.default, { current: this.props.current })
-	      );
+	      console.log(this.props);
+	      var state = this.props;
+
+	      return _react2.default.createElement(_SidebarList2.default, {
+	        items: state.recipes,
+	        onItemClick: function onItemClick(id) {
+	          return state.dispatch(_actions2.default.selectItem(id));
+	        }
+	      });
 	    }
 	  }]);
 
-	  return MainContainer;
-	}(_react2.default.Component);
+	  return RecipeList;
+	}(_react.Component);
 
-	// mapStatetoProps
-	// Returns the required State to the connect() function
-
-
-	function mapStatetoProps(state) {
+	exports.default = (0, _reactRedux.connect)(function (state) {
 	  return state;
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStatetoProps)(MainContainer);
+	})(RecipeList);
 
 /***/ },
 /* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// SidebarList: displays a list of object items in a sidebar
+	// Takes a list of items, and a callback function for clicking the item
+	var SidebarList = function SidebarList(_ref) {
+	  var items = _ref.items,
+	      onItemClick = _ref.onItemClick;
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'sidebar' },
+	    _react2.default.createElement(ListItem, { text: 'Add a new recipe' }),
+	    items.map(function (item) {
+	      return _react2.default.createElement(ListItem, {
+	        key: item.id,
+	        text: item.id,
+	        onClick: function onClick() {
+	          return onItemClick(item.id);
+	        }
+	      });
+	    })
+	  );
+	};
+	// ListItem: creates each row in the list in Sidebar
+	var ListItem = function ListItem(_ref2) {
+	  var text = _ref2.text,
+	      onClick = _ref2.onClick;
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'sidebar-row' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'sidebar-row__text', onClick: onClick },
+	      text
+	    ),
+	    _react2.default.createElement('div', { className: 'sidebar-row__divider' })
+	  );
+	};
+
+	exports.default = SidebarList;
+
+/***/ },
+/* 219 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	// Actions
+	// Contains two actions:
+	// ADD_RECIPE adds a recipe to the state
+	// EDIT_RECIPE edits a recipe already in the state
+
+	var actions = {
+	  addRecipe: function addRecipe(recipe) {
+	    return {
+	      type: 'ADD_RECIPE',
+	      recipe: recipe
+	    };
+	  },
+	  editRecipe: function editRecipe(recipe) {
+	    return {
+	      type: 'EDIT_RECIPE',
+	      recipe: recipe
+	    };
+	  },
+	  selectItem: function selectItem(id) {
+	    return {
+	      type: 'SELECT_ITEM',
+	      id: id
+	    };
+	  }
+	};
+
+	exports.default = actions;
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _Display = __webpack_require__(221);
+
+	var _Display2 = _interopRequireDefault(_Display);
+
+	var _reactRedux = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CurrentRecipe = function (_Component) {
+	  _inherits(CurrentRecipe, _Component);
+
+	  function CurrentRecipe() {
+	    _classCallCheck(this, CurrentRecipe);
+
+	    return _possibleConstructorReturn(this, (CurrentRecipe.__proto__ || Object.getPrototypeOf(CurrentRecipe)).apply(this, arguments));
+	  }
+
+	  _createClass(CurrentRecipe, [{
+	    key: 'render',
+	    value: function render() {
+	      var state = this.props;
+
+	      return _react2.default.createElement(_Display2.default, {
+	        item: state.current
+	      });
+	    }
+	  }]);
+
+	  return CurrentRecipe;
+	}(_react.Component);
+
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	  return state;
+	})(CurrentRecipe);
+
+/***/ },
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24320,21 +24463,26 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Display
-	// Takes an item as props
+	// Takes an object item
 	// Shows the contents of the item,
-	// Or asks for a new recipe to be added if no item is passed
-	function Display(props) {
-	  if (_typeof(props.current) == "object") {
+	// Or asks for a new item to be added if no item is passed
+	var Display = function Display(_ref) {
+	  var item = _ref.item;
+
+	  if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === "object") {
 	    return _react2.default.createElement(
 	      'div',
 	      { className: 'contentbar' },
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'contentbar-title' },
-	        props.current.title
+	        item.id
 	      ),
-	      props.current.ingredients.map(function (listvalue, index) {
-	        return _react2.default.createElement(DisplayRow, { data: listvalue, key: index });
+	      item.ingredients.split(', ').map(function (ingredient, index) {
+	        return _react2.default.createElement(DisplayRow, {
+	          key: index,
+	          text: ingredient
+	        });
 	      })
 	    );
 	  }
@@ -24347,72 +24495,18 @@
 	      'New Recipe'
 	    )
 	  );
-	}
+	};
 	// DisplayRow: returns each ingredient as a row of its own
-	function DisplayRow(props) {
+	var DisplayRow = function DisplayRow(_ref2) {
+	  var text = _ref2.text;
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'contentbar-row' },
-	    props.data
+	    text
 	  );
-	}
+	};
 
 	exports.default = Display;
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// Sidebar: displays existing recipes and allows creation of new recipes
-	// Takes props from MainContainer to generate the list of existing recipes
-	function Sidebar(props) {
-	  var titles = [];
-	  if (props.recipes != ([] || undefined)) {
-	    for (var i = 0; i < props.recipes.length; i++) {
-	      titles.push(props.recipes[i]['title']);
-	    }
-	  }
-
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'sidebar' },
-	    _react2.default.createElement(RecipeName, { data: 'New Recipe', onClick: props.onClick }),
-	    titles.map(function (listvalue, index) {
-	      return _react2.default.createElement(RecipeName, { data: listvalue, key: index, index: index, onClick: props.onClick });
-	    })
-	  );
-	}
-	// RecipeName: creates each row in the list in Sidebar
-	function RecipeName(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'sidebar-row' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'sidebar-row__text', id: props.index, onClick: function onClick(event) {
-	          return props.onClick(event);
-	        } },
-	      props.data
-	    ),
-	    _react2.default.createElement('div', { className: 'sidebar-row__divider' })
-	  );
-	}
-
-	exports.default = Sidebar;
 
 /***/ }
 /******/ ]);

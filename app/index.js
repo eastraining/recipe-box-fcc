@@ -7,25 +7,25 @@ import App from './displays/App';
 // default recipe list
 const defaultRecipes = [
   {
-    title: 'Singapore Fried Noodles',
+    id: 'Singapore Fried Noodles',
     ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
-    id: 0
   },
   {
-    title: 'Bak Kut Teh',
+    id: 'Bak Kut Teh',
     ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks',
-    id: 1
   },
   {
-    title: 'Beef Bourguignon',
+    id: 'Beef Bourguignon',
     ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms',
-    id: 2
   }
 ];
 
 // configure and create store
 let initialState = {
-  current: '',
+  current: {
+    id: 'Singapore Fried Noodles',
+    ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
+  },
   recipes: defaultRecipes
 }
 let store = configureStore(initialState);

@@ -2,17 +2,20 @@ import React from 'react';
 import { render } from 'react-dom';
 
 // Display
-// Takes an item as props
+// Takes an object item
 // Shows the contents of the item,
-// Or asks for a new recipe to be added if no item is passed
-function Display(props) {
-  if (typeof props.current == "object") {
+// Or asks for a new item to be added if no item is passed
+const Display = ({item}) => {
+  if (typeof item === "object") {
     return(
       <div className="contentbar">
-        <div className="contentbar-title">{props.current.title}</div>
-        {props.current.ingredients.map(function(listvalue, index) {
-          return <DisplayRow data={listvalue} key={index} />
-        })}
+        <div className="contentbar-title">{item.id}</div>
+        {item.ingredients.split(', ').map((ingredient, index) => 
+          <DisplayRow
+            key={index}
+            text={ingredient} 
+          />
+        )}
       </div>
     )
   }
@@ -23,12 +26,10 @@ function Display(props) {
   )
 }
 // DisplayRow: returns each ingredient as a row of its own
-function DisplayRow(props) {
-  return (
-    <div className="contentbar-row">
-      {props.data}
-    </div>
-  )
-}
+const DisplayRow = ({text}) => (
+  <div className="contentbar-row">
+    {text}
+  </div>
+);
 
 export default Display;
