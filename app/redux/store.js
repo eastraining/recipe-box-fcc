@@ -10,8 +10,6 @@ let configureStore = (initialState = {
   current: '',
   recipes: []
 }) => {
-  console.log('Configure Store Called');
-  console.log(initialState);
   return finalCreateStore(reducer, initialState);
 }
 
