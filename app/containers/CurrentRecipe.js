@@ -16,12 +16,11 @@ class CurrentRecipe extends Component {
   }
 
   render() {
-    const current = this.props;
-
     if (current.edit) {
       return (
         <Form
-          item={current}
+          item={this.state.current}
+          onChange={this.handleChange}
           handleSubmit={(event) => this.handleSubmit}
         />
       )
@@ -29,7 +28,7 @@ class CurrentRecipe extends Component {
 
     return (
       <Display
-        item={current}
+        item={this.state.current}
       />
     );
   }
