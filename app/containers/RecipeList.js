@@ -19,4 +19,10 @@ class RecipeList extends Component {
   }
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     recipes: state.recipes
+//   }
+// }
+
 export default connect(state => state)(RecipeList);

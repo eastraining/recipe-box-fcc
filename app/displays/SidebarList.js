@@ -5,20 +5,20 @@ import { render } from 'react-dom';
 // Takes a list of items, and a callback function for clicking the item
 const SidebarList = ({items, onItemClick}) => (
   <div className="sidebar">
-    <ListItem text={'Add a new recipe'} />
     {items.map(item => 
       <ListItem 
         key={item.id}
         text={item.id}
+        current={item.current}
         onClick={() => onItemClick(item.id)}
       />
     )}
   </div>
 );
 // ListItem: creates each row in the list in Sidebar
-const ListItem = ({text, onClick}) => (
+const ListItem = ({text, current, onClick}) => (
   <div className="sidebar-row">
-    <div className="sidebar-row__text" onClick={onClick}>{text}</div>
+    <div className={"sidebar-row__text" + (current ? " focus" : "")} onClick={onClick}>{text}</div>
     <div className="sidebar-row__divider" />
   </div>
 );

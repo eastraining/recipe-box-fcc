@@ -69,22 +69,29 @@
 	
 	// default recipe list
 	var defaultRecipes = [{
+	  id: 'New Recipe',
+	  ingredients: 'Add a new recipe',
+	  current: true,
+	  edit: true
+	}, {
 	  id: 'Singapore Fried Noodles',
-	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce'
+	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
+	  current: false,
+	  edit: false
 	}, {
 	  id: 'Bak Kut Teh',
-	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks'
+	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks',
+	  current: false,
+	  edit: false
 	}, {
 	  id: 'Beef Bourguignon',
-	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms'
+	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms',
+	  current: false,
+	  edit: false
 	}];
 	
 	// configure and create store
 	var initialState = {
-	  current: {
-	    id: 'Singapore Fried Noodles',
-	    ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce'
-	  },
 	  recipes: defaultRecipes
 	};
 	var store = (0, _store2.default)(initialState);
@@ -23902,6 +23909,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	// Reducer
 	// Accepts 2 actions: ADD_RECIPE and EDIT_RECIPE
 	// Returns a state with a new recipe,
@@ -23915,12 +23925,16 @@
 	var reducer = function reducer(state, action) {
 	  switch (action.type) {
 	    case 'SELECT_ITEM':
-	      var newCurrent = state.recipes.filter(function (obj) {
-	        return obj.id === action.id;
-	      })[0];
-	      return Object.assign({}, state, {
-	        current: newCurrent
-	      });
+	      return Object.assign({}, state, { recipes: state.recipes.map(function (recipe) {
+	          if (recipe.id !== action.id) {
+	            return _extends({}, recipe, {
+	              current: false
+	            });
+	          }
+	          return _extends({}, recipe, {
+	            current: true
+	          });
+	        }) });
 	    // case 'ADD_RECIPE':
 	    //   return Object.assign({}, state, {
 	    //     recipes: [{
@@ -24942,6 +24956,12 @@
 	  return RecipeList;
 	}(_react.Component);
 	
+	// const mapStateToProps = (state) => {
+	//   return {
+	//     recipes: state.recipes
+	//   }
+	// }
+	
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	  return state;
 	})(RecipeList);
@@ -24975,11 +24995,11 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'sidebar' },
-	    _react2.default.createElement(ListItem, { text: 'Add a new recipe' }),
 	    items.map(function (item) {
 	      return _react2.default.createElement(ListItem, {
 	        key: item.id,
 	        text: item.id,
+	        current: item.current,
 	        onClick: function onClick() {
 	          return onItemClick(item.id);
 	        }
@@ -24990,13 +25010,14 @@
 	// ListItem: creates each row in the list in Sidebar
 	var ListItem = function ListItem(_ref2) {
 	  var text = _ref2.text,
+	      current = _ref2.current,
 	      onClick = _ref2.onClick;
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'sidebar-row' },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'sidebar-row__text', onClick: onClick },
+	      { className: "sidebar-row__text" + (current ? " focus" : ""), onClick: onClick },
 	      text
 	    ),
 	    _react2.default.createElement('div', { className: 'sidebar-row__divider' })
@@ -25083,19 +25104,39 @@
 	var CurrentRecipe = function (_Component) {
 	  _inherits(CurrentRecipe, _Component);
 	
-	  function CurrentRecipe() {
+	  function CurrentRecipe(props) {
 	    _classCallCheck(this, CurrentRecipe);
 	
-	    return _possibleConstructorReturn(this, (CurrentRecipe.__proto__ || Object.getPrototypeOf(CurrentRecipe)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (CurrentRecipe.__proto__ || Object.getPrototypeOf(CurrentRecipe)).call(this, props));
+	
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(CurrentRecipe, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      event.preventDefault();
+	      console.log('button clicked');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var state = this.props;
+	      var _this2 = this;
+	
+	      var current = this.props;
+	
+	      if (current.edit) {
+	        return _react2.default.createElement(Form, {
+	          item: current,
+	          handleSubmit: function handleSubmit(event) {
+	            return _this2.handleSubmit;
+	          }
+	        });
+	      }
 	
 	      return _react2.default.createElement(_Display2.default, {
-	        item: state.current
+	        item: current
 	      });
 	    }
 	  }]);
@@ -25103,9 +25144,13 @@
 	  return CurrentRecipe;
 	}(_react.Component);
 	
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	  return state;
-	})(CurrentRecipe);
+	var mapStateToProps = function mapStateToProps(state) {
+	  return state.recipes.filter(function (obj) {
+	    return obj.current === true;
+	  })[0];
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CurrentRecipe);
 
 /***/ },
 /* 221 */
@@ -25120,8 +25165,6 @@
 	  value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -25132,36 +25175,23 @@
 	
 	// Display
 	// Takes an object item
-	// Shows the contents of the item,
-	// Or asks for a new item to be added if no item is passed
+	// Shows the contents of the item
 	var Display = function Display(_ref) {
 	  var item = _ref.item;
-	
-	  if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === "object") {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'contentbar' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'contentbar-title' },
-	        item.id
-	      ),
-	      item.ingredients.split(', ').map(function (ingredient, index) {
-	        return _react2.default.createElement(DisplayRow, {
-	          key: index,
-	          text: ingredient
-	        });
-	      })
-	    );
-	  }
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'contentbar' },
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'contentbar-title' },
-	      'New Recipe'
-	    )
+	      item.id
+	    ),
+	    item.ingredients.split(',').map(function (ingredient, index) {
+	      return _react2.default.createElement(DisplayRow, {
+	        key: index,
+	        text: ingredient
+	      });
+	    })
 	  );
 	};
 	// DisplayRow: returns each ingredient as a row of its own

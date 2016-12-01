@@ -11,10 +11,18 @@
 const reducer = (state, action) => {
   switch(action.type) {
     case 'SELECT_ITEM':
-      const newCurrent = state.recipes.filter(obj => obj.id === action.id)[0];
-      return Object.assign({}, state, {
-        current: newCurrent
-      });
+      return Object.assign({}, state, {recipes: state.recipes.map(recipe => {
+              if (recipe.id !== action.id) {
+                return {
+                  ...recipe,
+                  current: false
+                }
+              }
+              return {
+                ...recipe,
+                current: true
+              }
+            })});
     // case 'ADD_RECIPE':
     //   return Object.assign({}, state, {
     //     recipes: [{
