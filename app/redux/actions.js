@@ -1,7 +1,7 @@
 // Actions
-// Contains two actions:
-// ADD_RECIPE adds a recipe to the state
-// EDIT_RECIPE edits a recipe already in the state
+// Contains actions:
+// ADD_RECIPE adds an object recipe to the state
+// EDIT_RECIPE sets a recipe already in the state to be edited
 
 let actions = {
   addRecipe: (recipe) => {

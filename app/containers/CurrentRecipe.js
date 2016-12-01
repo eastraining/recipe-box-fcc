@@ -1,37 +1,20 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Display from '../displays/Display';
+import Form from '../containers/Form';
 import { connect } from 'react-redux';
 
-class CurrentRecipe extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    console.log('button clicked');
-  }
-
-  render() {
-    if (current.edit) {
-      return (
-        <Form
-          item={this.state.current}
-          onChange={this.handleChange}
-          handleSubmit={(event) => this.handleSubmit}
-        />
-      )
-    }
-
+const CurrentRecipe = (props) => {
+  if (props.edit) {
     return (
-      <Display
-        item={this.state.current}
-      />
-    );
+      <Form />
+    )
   }
+  return (
+    <Display
+      item={props}
+    />
+  );
 }
 
 const mapStateToProps = (state) => {

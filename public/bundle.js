@@ -67,34 +67,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// default recipe list
-	var defaultRecipes = [{
-	  id: 'New Recipe',
-	  ingredients: 'Add a new recipe',
-	  current: true,
-	  edit: true
-	}, {
-	  id: 'Singapore Fried Noodles',
-	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
-	  current: false,
-	  edit: false
-	}, {
-	  id: 'Bak Kut Teh',
-	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks',
-	  current: false,
-	  edit: false
-	}, {
-	  id: 'Beef Bourguignon',
-	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms',
-	  current: false,
-	  edit: false
-	}];
-	
 	// configure and create store
-	var initialState = {
-	  recipes: defaultRecipes
-	};
-	var store = (0, _store2.default)(initialState);
+	var store = (0, _store2.default)();
 	
 	// render App
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -23886,10 +23860,32 @@
 	
 	var finalCreateStore = (0, _redux.compose)((0, _redux.applyMiddleware)((0, _reduxLogger2.default)()))(_redux.createStore);
 	
+	// default recipe list
+	var defaultRecipes = [{
+	  id: 'Add a new recipe',
+	  ingredients: '',
+	  current: true,
+	  edit: true
+	}, {
+	  id: 'Singapore Fried Noodles',
+	  ingredients: 'Egg Noodles, Eggs, Shrimp, Green Bean Sprouts, Soy Sauce',
+	  current: false,
+	  edit: false
+	}, {
+	  id: 'Bak Kut Teh',
+	  ingredients: 'Pork Ribs, White Pepper, Garlic, Chinese Herbs, Fried Doughsticks',
+	  current: false,
+	  edit: false
+	}, {
+	  id: 'Beef Bourguignon',
+	  ingredients: 'Beef, Red Wine, Beef Broth, Garlic, Onions, Mushrooms',
+	  current: false,
+	  edit: false
+	}];
+	
 	var configureStore = function configureStore() {
 	  var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-	    current: '',
-	    recipes: []
+	    recipes: defaultRecipes
 	  };
 	
 	  return finalCreateStore(_reducer2.default, initialState);
@@ -23911,6 +23907,8 @@
 	});
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	// Reducer
 	// Accepts 2 actions: ADD_RECIPE and EDIT_RECIPE
@@ -23935,13 +23933,15 @@
 	            current: true
 	          });
 	        }) });
-	    // case 'ADD_RECIPE':
-	    //   return Object.assign({}, state, {
-	    //     recipes: [{
-	    //       id: action.recipe.id,
-	    //       ingredients: action.recipe.ingredients,
-	    //     }, ...state.recipes]
-	    //   });
+	    case 'ADD_RECIPE':
+	      return Object.assign({}, state, {
+	        recipes: [].concat(_toConsumableArray(state.recipes), [{
+	          id: action.recipe.id,
+	          ingredients: action.recipe.ingredients,
+	          current: false,
+	          edit: false
+	        }])
+	      });
 	    // case 'EDIT_RECIPE':
 	    //   return (
 	    //     Object.assign({}, state, {})
@@ -24956,15 +24956,13 @@
 	  return RecipeList;
 	}(_react.Component);
 	
-	// const mapStateToProps = (state) => {
-	//   return {
-	//     recipes: state.recipes
-	//   }
-	// }
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    recipes: state.recipes
+	  };
+	};
 	
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	  return state;
-	})(RecipeList);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(RecipeList);
 
 /***/ },
 /* 218 */
@@ -25039,9 +25037,9 @@
 	  value: true
 	});
 	// Actions
-	// Contains two actions:
-	// ADD_RECIPE adds a recipe to the state
-	// EDIT_RECIPE edits a recipe already in the state
+	// Contains actions:
+	// ADD_RECIPE adds an object recipe to the state
+	// EDIT_RECIPE sets a recipe already in the state to be edited
 	
 	var actions = {
 	  addRecipe: function addRecipe(recipe) {
@@ -25079,8 +25077,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -25091,58 +25087,22 @@
 	
 	var _Display2 = _interopRequireDefault(_Display);
 	
+	var _Form = __webpack_require__(/*! ../containers/Form */ 222);
+	
+	var _Form2 = _interopRequireDefault(_Form);
+	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 178);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var CurrentRecipe = function (_Component) {
-	  _inherits(CurrentRecipe, _Component);
-	
-	  function CurrentRecipe(props) {
-	    _classCallCheck(this, CurrentRecipe);
-	
-	    var _this = _possibleConstructorReturn(this, (CurrentRecipe.__proto__ || Object.getPrototypeOf(CurrentRecipe)).call(this, props));
-	
-	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    return _this;
+	var CurrentRecipe = function CurrentRecipe(props) {
+	  if (props.edit) {
+	    return _react2.default.createElement(_Form2.default, null);
 	  }
-	
-	  _createClass(CurrentRecipe, [{
-	    key: 'handleSubmit',
-	    value: function handleSubmit(event) {
-	      event.preventDefault();
-	      console.log('button clicked');
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      var current = this.props;
-	
-	      if (current.edit) {
-	        return _react2.default.createElement(Form, {
-	          item: current,
-	          handleSubmit: function handleSubmit(event) {
-	            return _this2.handleSubmit;
-	          }
-	        });
-	      }
-	
-	      return _react2.default.createElement(_Display2.default, {
-	        item: current
-	      });
-	    }
-	  }]);
-	
-	  return CurrentRecipe;
-	}(_react.Component);
+	  return _react2.default.createElement(_Display2.default, {
+	    item: props
+	  });
+	};
 	
 	var mapStateToProps = function mapStateToProps(state) {
 	  return state.recipes.filter(function (obj) {
@@ -25205,6 +25165,191 @@
 	};
 	
 	exports.default = Display;
+
+/***/ },
+/* 222 */
+/*!********************************!*\
+  !*** ./app/containers/Form.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(/*! react-dom */ 32);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 178);
+	
+	var _actions = __webpack_require__(/*! ../redux/actions */ 219);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Form
+	// Container component controlling behaviour of a form
+	var Form = function (_Component) {
+	  _inherits(Form, _Component);
+	
+	  function Form(props) {
+	    _classCallCheck(this, Form);
+	
+	    var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+	
+	    _this.state = { id: '' };
+	
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Form, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var getCurrentRecipe = function getCurrentRecipe(received) {
+	        var recipe = received.recipes.filter(function (obj) {
+	          return obj.current === true;
+	        })[0];
+	        if (recipe.id === 'Add a new recipe') {
+	          return _extends({}, recipe, {
+	            id: 'Enter the name of the dish',
+	            ingredients: 'Enter ingredients, separated by commas'
+	          });
+	        }
+	        return recipe;
+	      };
+	      var recipe = getCurrentRecipe(this.props);
+	
+	      this.setState(_extends({}, recipe, {
+	        id: recipe.id,
+	        ingredients: recipe.ingredients
+	      }));
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      if (event.target.name === 'title') {
+	        this.setState({ id: event.target.value });
+	      } else if (event.target.name === 'ingredients') {
+	        this.setState({ ingredients: event.target.value });
+	      }
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(currentState) {
+	      var existing = this.props.recipes.filter(function (recipe) {
+	        // prevent overriding other recipes that are not set to be edited
+	        if (!recipe.edit && recipe.id == currentState.id) {
+	          return true;
+	        }
+	        for (var key in recipe) {
+	          if (recipe[key] !== currentState[key]) {
+	            return false;
+	          }
+	        }
+	        return true;
+	      });
+	
+	      var newRecipe = Object.assign({}, currentState);
+	
+	      if (existing.length === 0) {
+	        this.props.dispatch(_actions2.default.addRecipe(newRecipe));
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var state = this.state;
+	      var title = state.id;
+	      var content = state.ingredients;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'contentbar' },
+	        _react2.default.createElement(
+	          'form',
+	          null,
+	          _react2.default.createElement(FormTitle, { name: "title", value: title, onChange: this.handleChange }),
+	          _react2.default.createElement(FormContent, { name: "ingredients", value: content, onChange: this.handleChange }),
+	          _react2.default.createElement('input', { type: 'button', onClick: function onClick() {
+	              return _this2.handleSubmit(state);
+	            }, value: 'Add' })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Form;
+	}(_react.Component);
+	
+	// display components
+	
+	
+	var FormTitle = function FormTitle(_ref) {
+	  var name = _ref.name,
+	      value = _ref.value,
+	      onChange = _ref.onChange;
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'form-title' },
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Title: '
+	    ),
+	    _react2.default.createElement('input', {
+	      type: 'text',
+	      name: name,
+	      value: value,
+	      onChange: onChange
+	    })
+	  );
+	};
+	var FormContent = function FormContent(_ref2) {
+	  var name = _ref2.name,
+	      value = _ref2.value,
+	      onChange = _ref2.onChange;
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'form-content' },
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Ingredients: '
+	    ),
+	    _react2.default.createElement('textarea', {
+	      type: 'text',
+	      name: name,
+	      value: value,
+	      onChange: onChange
+	    })
+	  );
+	};
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return state;
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Form);
 
 /***/ }
 /******/ ]);
