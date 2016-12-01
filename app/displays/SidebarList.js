@@ -17,8 +17,8 @@ const SidebarList = ({items, onItemClick}) => (
 );
 // ListItem: creates each row in the list in Sidebar
 const ListItem = ({text, current, onClick}) => (
-  <div className="sidebar-row">
-    <div className={"sidebar-row__text" + (current ? " focus" : "")} onClick={onClick}>{text}</div>
+  <div className="sidebar-row" onClick={onClick}>
+    <div className={"sidebar-row__text" + (current ? " focus" : "")} >{text}</div>
     <div className="sidebar-row__divider" />
   </div>
 );

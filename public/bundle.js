@@ -24355,10 +24355,10 @@
 	      onClick = _ref2.onClick;
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'sidebar-row' },
+	    { className: 'sidebar-row', onClick: onClick },
 	    _react2.default.createElement(
 	      'div',
-	      { className: "sidebar-row__text" + (current ? " focus" : ""), onClick: onClick },
+	      { className: "sidebar-row__text" + (current ? " focus" : "") },
 	      text
 	    ),
 	    _react2.default.createElement('div', { className: 'sidebar-row__divider' })
