@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
+import Button from '../displays/Button'
 
 // Form
 // Container component controlling behaviour of a form
@@ -13,6 +14,7 @@ class Form extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
   componentDidMount() {
     const getCurrentRecipe = (received) => {
@@ -61,7 +63,14 @@ class Form extends Component {
 
     if (existing.length === 0) {
       this.props.dispatch(actions.addRecipe(newRecipe));
+      this.props.dispatch(actions.selectItem(newRecipe.id));
     }
+  }
+  handleClear() {
+    this.setState({
+      id: '',
+      ingredients: ''
+    })
   }
 
   render() {
@@ -74,7 +83,8 @@ class Form extends Component {
         <form>
           <FormTitle name={"title"} value={title} onChange={this.handleChange} />
           <FormContent name={"ingredients"} value={content} onChange={this.handleChange} />
-          <input type="button" onClick={() => this.handleSubmit(state)} value="Add" />
+          <Button name={"addRecipe"} value={"Add"} onClick={() => this.handleSubmit(state)} />
+          <Button name={"clear"} value={"Clear"} onClick={this.handleClear} />
         </form>
       </div>
     )
