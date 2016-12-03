@@ -83,8 +83,10 @@ class Form extends Component {
         <form>
           <FormTitle name={"title"} value={title} onChange={this.handleChange} />
           <FormContent name={"ingredients"} value={content} onChange={this.handleChange} />
-          <Button name={"addRecipe"} value={"Add"} onClick={() => this.handleSubmit(state)} />
-          <Button name={"clear"} value={"Clear"} onClick={this.handleClear} />
+          <div className="form__button-bar">
+            <Button name={"addRecipe"} value={"Add"} onClick={() => this.handleSubmit(state)} />
+            <Button name={"clear"} value={"Clear"} onClick={this.handleClear} />
+          </div>
         </form>
       </div>
     )
@@ -94,7 +96,6 @@ class Form extends Component {
 // display components
 const FormTitle = ({name, value, onChange}) => (
   <div className="form-title">
-    <p>Title: </p>
     <input 
       type="text" 
       name={name} 
@@ -105,7 +106,6 @@ const FormTitle = ({name, value, onChange}) => (
 )
 const FormContent = ({name, value, onChange}) => (
   <div className="form-content">
-    <p>Ingredients: </p>
     <textarea 
       type="text" 
       name={name} 

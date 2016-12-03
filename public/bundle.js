@@ -25304,10 +25304,14 @@
 	          null,
 	          _react2.default.createElement(FormTitle, { name: "title", value: title, onChange: this.handleChange }),
 	          _react2.default.createElement(FormContent, { name: "ingredients", value: content, onChange: this.handleChange }),
-	          _react2.default.createElement(_Button2.default, { name: "addRecipe", value: "Add", onClick: function onClick() {
-	              return _this2.handleSubmit(state);
-	            } }),
-	          _react2.default.createElement(_Button2.default, { name: "clear", value: "Clear", onClick: this.handleClear })
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form__button-bar' },
+	            _react2.default.createElement(_Button2.default, { name: "addRecipe", value: "Add", onClick: function onClick() {
+	                return _this2.handleSubmit(state);
+	              } }),
+	            _react2.default.createElement(_Button2.default, { name: "clear", value: "Clear", onClick: this.handleClear })
+	          )
 	        )
 	      );
 	    }
@@ -25326,11 +25330,6 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'form-title' },
-	    _react2.default.createElement(
-	      'p',
-	      null,
-	      'Title: '
-	    ),
 	    _react2.default.createElement('input', {
 	      type: 'text',
 	      name: name,
@@ -25346,11 +25345,6 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'form-content' },
-	    _react2.default.createElement(
-	      'p',
-	      null,
-	      'Ingredients: '
-	    ),
 	    _react2.default.createElement('textarea', {
 	      type: 'text',
 	      name: name,
