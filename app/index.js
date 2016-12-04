@@ -10,7 +10,6 @@ let store = configureStore(loadState());
 
 store.subscribe(() => {
   saveState(store.getState());
-  console.log('state saved');
 });
 
 // render App

@@ -74,7 +74,6 @@
 	
 	store.subscribe(function () {
 	  (0, _localStorage.saveState)(store.getState());
-	  console.log('state saved');
 	});
 	
 	// render App
@@ -25491,7 +25490,8 @@
 	    var serialisedState = JSON.stringify(state);
 	    localStorage.setItem('state', serialisedState);
 	  } catch (err) {
-	    console.log('saveState error');
+	    console.log('localStorage could not be accessed.\
+	    Persistence functionality disabled');
 	  }
 	};
 

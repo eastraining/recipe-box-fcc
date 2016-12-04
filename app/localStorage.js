@@ -20,6 +20,7 @@ export const saveState = (state) => {
     localStorage.setItem('state', serialisedState);
   }
   catch (err) {
-    console.log('saveState error');
+    console.log('localStorage could not be accessed.\
+    Persistence functionality disabled');
   }
 }
