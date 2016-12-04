@@ -46,9 +46,14 @@ class Form extends Component {
   	}
   }
   handleSubmit(currentState) {
+    // prevent empty recipe from being submitted
+    if ((currentState.id || currentState.ingredients) == '') {
+      return;
+    }
+
     const existing = this.props.recipes.filter(recipe => {
       // prevent overriding other recipes that are not set to be edited
-      if (!recipe.edit && recipe.id == currentState.id) {
+      if (!recipe.edit && (recipe.id == currentState.id)) {
         return true;
       }
       for (var key in recipe) {
@@ -62,6 +67,8 @@ class Form extends Component {
     const newRecipe = Object.assign({}, currentState);
 
     if (existing.length === 0) {
+      this.props.dispatch(actions.selectItem(this.props.recipes[0].id));
+      this.props.dispatch(actions.delRecipe(newRecipe.id));
       this.props.dispatch(actions.addRecipe(newRecipe));
       this.props.dispatch(actions.selectItem(newRecipe.id));
     }
@@ -77,6 +84,7 @@ class Form extends Component {
     let state = this.state;
     let title = state.id;
     let content = state.ingredients;
+    console.log(state, this.props);
 
     return (
       <div className="contentbar">

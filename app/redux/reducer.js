@@ -12,7 +12,7 @@ const reducer = (state, action) => {
   switch(action.type) {
     case 'SELECT_ITEM':
       return Object.assign({}, state, {recipes: state.recipes.map(recipe => {
-        if (recipe.id !== action.id) {
+        if (recipe.id !== action.id || ((action.id === '0') && (recipe !== state.recipes[0]))) {
           return {
             ...recipe,
             current: false
@@ -32,10 +32,23 @@ const reducer = (state, action) => {
           edit: false
         },]
       });
-    // case 'EDIT_RECIPE':
-    //   return (
-    //     Object.assign({}, state, {})
-    //   );
+    case 'EDIT_RECIPE':
+      return Object.assign({}, state, {recipes: state.recipes.map(recipe => {
+        if (recipe.id !== action.id && recipe !== state.recipes[0]) {
+          return {
+            ...recipe,
+            edit: false
+          }
+        }
+        return {
+          ...recipe,
+          edit: true
+        }
+      })});
+    case 'DEL_RECIPE':
+      return Object.assign({}, state, {recipes: state.recipes.filter(recipe => {
+        return recipe.id !== action.id
+      })});
     default:
       return state;
   }

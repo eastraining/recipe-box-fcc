@@ -23924,7 +23924,7 @@
 	  switch (action.type) {
 	    case 'SELECT_ITEM':
 	      return Object.assign({}, state, { recipes: state.recipes.map(function (recipe) {
-	          if (recipe.id !== action.id) {
+	          if (recipe.id !== action.id || action.id === '0' && recipe !== state.recipes[0]) {
 	            return _extends({}, recipe, {
 	              current: false
 	            });
@@ -23942,10 +23942,21 @@
 	          edit: false
 	        }])
 	      });
-	    // case 'EDIT_RECIPE':
-	    //   return (
-	    //     Object.assign({}, state, {})
-	    //   );
+	    case 'EDIT_RECIPE':
+	      return Object.assign({}, state, { recipes: state.recipes.map(function (recipe) {
+	          if (recipe.id !== action.id && recipe !== state.recipes[0]) {
+	            return _extends({}, recipe, {
+	              edit: false
+	            });
+	          }
+	          return _extends({}, recipe, {
+	            edit: true
+	          });
+	        }) });
+	    case 'DEL_RECIPE':
+	      return Object.assign({}, state, { recipes: state.recipes.filter(function (recipe) {
+	          return recipe.id !== action.id;
+	        }) });
 	    default:
 	      return state;
 	  }
@@ -24947,7 +24958,8 @@
 	      return _react2.default.createElement(_SidebarList2.default, {
 	        items: state.recipes,
 	        onItemClick: function onItemClick(id) {
-	          return state.dispatch(_actions2.default.selectItem(id));
+	          state.dispatch(_actions2.default.selectItem(id));
+	          state.dispatch(_actions2.default.editRecipe(''));
 	        }
 	      });
 	    }
@@ -25048,10 +25060,16 @@
 	      recipe: recipe
 	    };
 	  },
-	  editRecipe: function editRecipe(recipe) {
+	  editRecipe: function editRecipe(id) {
 	    return {
 	      type: 'EDIT_RECIPE',
-	      recipe: recipe
+	      id: id
+	    };
+	  },
+	  delRecipe: function delRecipe(id) {
+	    return {
+	      type: 'DEL_RECIPE',
+	      id: id
 	    };
 	  },
 	  selectItem: function selectItem(id) {
@@ -25093,6 +25111,10 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 178);
 	
+	var _actions = __webpack_require__(/*! ../redux/actions */ 219);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var CurrentRecipe = function CurrentRecipe(props) {
@@ -25100,7 +25122,9 @@
 	    return _react2.default.createElement(_Form2.default, null);
 	  }
 	  return _react2.default.createElement(_Display2.default, {
-	    item: props
+	    item: props,
+	    onEditClick: props.handleEditClick,
+	    onDelClick: props.handleDelClick
 	  });
 	};
 	
@@ -25109,8 +25133,19 @@
 	    return obj.current === true;
 	  })[0];
 	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    handleEditClick: function handleEditClick(state) {
+	      dispatch(_actions2.default.editRecipe(state));
+	    },
+	    handleDelClick: function handleDelClick(state) {
+	      dispatch(_actions2.default.selectItem('0'));
+	      dispatch(_actions2.default.delRecipe(state));
+	    }
+	  };
+	};
 	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CurrentRecipe);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CurrentRecipe);
 
 /***/ },
 /* 221 */
@@ -25131,13 +25166,19 @@
 	
 	var _reactDom = __webpack_require__(/*! react-dom */ 32);
 	
+	var _Button = __webpack_require__(/*! ../displays/Button */ 223);
+	
+	var _Button2 = _interopRequireDefault(_Button);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// Display
 	// Takes an object item
 	// Shows the contents of the item
 	var Display = function Display(_ref) {
-	  var item = _ref.item;
+	  var item = _ref.item,
+	      onEditClick = _ref.onEditClick,
+	      onDelClick = _ref.onDelClick;
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'contentbar' },
@@ -25151,7 +25192,17 @@
 	        key: index,
 	        text: ingredient
 	      });
-	    })
+	    }),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'form__button-bar' },
+	      _react2.default.createElement(_Button2.default, { name: "editRecipe", value: "Edit", onClick: function onClick(event) {
+	          return onEditClick(item.id);
+	        } }),
+	      _react2.default.createElement(_Button2.default, { name: "deleteRecipe", value: "Delete", onClick: function onClick(event) {
+	          return onDelClick(item.id);
+	        } })
+	    )
 	  );
 	};
 	// DisplayRow: returns each ingredient as a row of its own
@@ -25259,6 +25310,11 @@
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(currentState) {
+	      // prevent empty recipe from being submitted
+	      if ((currentState.id || currentState.ingredients) == '') {
+	        return;
+	      }
+	
 	      var existing = this.props.recipes.filter(function (recipe) {
 	        // prevent overriding other recipes that are not set to be edited
 	        if (!recipe.edit && recipe.id == currentState.id) {
@@ -25275,6 +25331,8 @@
 	      var newRecipe = Object.assign({}, currentState);
 	
 	      if (existing.length === 0) {
+	        this.props.dispatch(_actions2.default.selectItem(this.props.recipes[0].id));
+	        this.props.dispatch(_actions2.default.delRecipe(newRecipe.id));
 	        this.props.dispatch(_actions2.default.addRecipe(newRecipe));
 	        this.props.dispatch(_actions2.default.selectItem(newRecipe.id));
 	      }
@@ -25295,6 +25353,7 @@
 	      var state = this.state;
 	      var title = state.id;
 	      var content = state.ingredients;
+	      console.log(state, this.props);
 	
 	      return _react2.default.createElement(
 	        'div',

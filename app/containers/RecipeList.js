@@ -11,8 +11,10 @@ class RecipeList extends Component {
     return (
       <SidebarList
         items={state.recipes}
-        onItemClick={id =>
-          state.dispatch(actions.selectItem(id))
+        onItemClick={id => {
+            state.dispatch(actions.selectItem(id));
+            state.dispatch(actions.editRecipe(''));
+          }
         }
       />
     );

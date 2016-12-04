@@ -10,11 +10,17 @@ let actions = {
       recipe
     }
   },
-  editRecipe: (recipe) => {
+  editRecipe: (id) => {
   	return {
   	  type: 'EDIT_RECIPE',
-  	  recipe
+  	  id
   	}
+  },
+  delRecipe: (id) => {
+    return {
+      type: 'DEL_RECIPE',
+      id
+    }
   },
   selectItem: (id) => {
     return {
