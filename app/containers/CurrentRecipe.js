@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.editRecipe(state));
     },
     handleDelClick: (state) => {
-      dispatch(actions.selectItem('0'));
+      dispatch(actions.selectItem('Add a new recipe'));
       dispatch(actions.delRecipe(state));
     }
   }

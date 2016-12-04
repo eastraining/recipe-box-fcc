@@ -12,7 +12,7 @@ const reducer = (state, action) => {
   switch(action.type) {
     case 'SELECT_ITEM':
       return Object.assign({}, state, {recipes: state.recipes.map(recipe => {
-        if (recipe.id !== action.id || ((action.id === '0') && (recipe !== state.recipes[0]))) {
+        if (recipe.id !== action.id) {
           return {
             ...recipe,
             current: false
@@ -30,7 +30,7 @@ const reducer = (state, action) => {
           ingredients: action.recipe.ingredients,
           current: false,
           edit: false
-        },]
+        }]
       });
     case 'EDIT_RECIPE':
       return Object.assign({}, state, {recipes: state.recipes.map(recipe => {

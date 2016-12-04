@@ -65,10 +65,16 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
+	var _localStorage = __webpack_require__(/*! ./localStorage */ 224);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// configure and create store
 	var store = (0, _store2.default)();
+	
+	// store.subscribe(() => {
+	//   saveState(store.getState());
+	// });
 	
 	// render App
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -23924,7 +23930,7 @@
 	  switch (action.type) {
 	    case 'SELECT_ITEM':
 	      return Object.assign({}, state, { recipes: state.recipes.map(function (recipe) {
-	          if (recipe.id !== action.id || action.id === '0' && recipe !== state.recipes[0]) {
+	          if (recipe.id !== action.id) {
 	            return _extends({}, recipe, {
 	              current: false
 	            });
@@ -25105,7 +25111,7 @@
 	
 	var _Display2 = _interopRequireDefault(_Display);
 	
-	var _Form = __webpack_require__(/*! ../containers/Form */ 222);
+	var _Form = __webpack_require__(/*! ../containers/Form */ 223);
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
@@ -25139,7 +25145,7 @@
 	      dispatch(_actions2.default.editRecipe(state));
 	    },
 	    handleDelClick: function handleDelClick(state) {
-	      dispatch(_actions2.default.selectItem('0'));
+	      dispatch(_actions2.default.selectItem('Add a new recipe'));
 	      dispatch(_actions2.default.delRecipe(state));
 	    }
 	  };
@@ -25166,7 +25172,7 @@
 	
 	var _reactDom = __webpack_require__(/*! react-dom */ 32);
 	
-	var _Button = __webpack_require__(/*! ../displays/Button */ 223);
+	var _Button = __webpack_require__(/*! ../displays/Button */ 222);
 	
 	var _Button2 = _interopRequireDefault(_Button);
 	
@@ -25220,6 +25226,40 @@
 /***/ },
 /* 222 */
 /*!********************************!*\
+  !*** ./app/displays/Button.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(/*! react-dom */ 32);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Button = function Button(_ref) {
+	  var onClick = _ref.onClick,
+	      value = _ref.value,
+	      name = _ref.name;
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'button' },
+	    _react2.default.createElement('input', { type: 'button', name: name, value: value, onClick: onClick })
+	  );
+	};
+	
+	exports.default = Button;
+
+/***/ },
+/* 223 */
+/*!********************************!*\
   !*** ./app/containers/Form.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
@@ -25246,7 +25286,7 @@
 	
 	var _actions2 = _interopRequireDefault(_actions);
 	
-	var _Button = __webpack_require__(/*! ../displays/Button */ 223);
+	var _Button = __webpack_require__(/*! ../displays/Button */ 222);
 	
 	var _Button2 = _interopRequireDefault(_Button);
 	
@@ -25353,7 +25393,6 @@
 	      var state = this.state;
 	      var title = state.id;
 	      var content = state.ingredients;
-	      console.log(state, this.props);
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -25420,38 +25459,40 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Form);
 
 /***/ },
-/* 223 */
-/*!********************************!*\
-  !*** ./app/displays/Button.js ***!
-  \********************************/
-/***/ function(module, exports, __webpack_require__) {
+/* 224 */
+/*!*****************************!*\
+  !*** ./app/localStorage.js ***!
+  \*****************************/
+/***/ function(module, exports) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	// localStorage
+	// loads stored redux state upon starting app
 	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(/*! react-dom */ 32);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Button = function Button(_ref) {
-	  var onClick = _ref.onClick,
-	      value = _ref.value,
-	      name = _ref.name;
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'button' },
-	    _react2.default.createElement('input', { type: 'button', name: name, value: value, onClick: onClick })
-	  );
+	var loadState = exports.loadState = function loadState() {
+	  try {
+	    var serialisedState = localStorage.getItem('state');
+	    if (serialisedState === null) {
+	      return undefined;
+	    }
+	    return JSON.parse(serialisedState);
+	  } catch (err) {
+	    return undefined;
+	  }
 	};
 	
-	exports.default = Button;
+	var saveState = exports.saveState = function saveState(state) {
+	  try {
+	    var serialisedState = JSON.stringify(state);
+	    localStorage.setItem('state', serialisedState);
+	  } catch (err) {
+	    console.log(err);
+	  }
+	};
 
 /***/ }
 /******/ ]);

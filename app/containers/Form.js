@@ -84,7 +84,6 @@ class Form extends Component {
     let state = this.state;
     let title = state.id;
     let content = state.ingredients;
-    console.log(state, this.props);
 
     return (
       <div className="contentbar">
