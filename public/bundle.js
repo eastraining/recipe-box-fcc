@@ -70,11 +70,12 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// configure and create store
-	var store = (0, _store2.default)();
+	var store = (0, _store2.default)((0, _localStorage.loadState)());
 	
-	// store.subscribe(() => {
-	//   saveState(store.getState());
-	// });
+	store.subscribe(function () {
+	  (0, _localStorage.saveState)(store.getState());
+	  console.log('state saved');
+	});
 	
 	// render App
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -25490,7 +25491,7 @@
 	    var serialisedState = JSON.stringify(state);
 	    localStorage.setItem('state', serialisedState);
 	  } catch (err) {
-	    console.log(err);
+	    console.log('saveState error');
 	  }
 	};
 

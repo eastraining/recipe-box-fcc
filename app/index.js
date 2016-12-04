@@ -6,11 +6,12 @@ import App from './displays/App';
 import { loadState, saveState } from './localStorage'
 
 // configure and create store
-let store = configureStore();
+let store = configureStore(loadState());
 
-// store.subscribe(() => {
-//   saveState(store.getState());
-// });
+store.subscribe(() => {
+  saveState(store.getState());
+  console.log('state saved');
+});
 
 // render App
 render(
